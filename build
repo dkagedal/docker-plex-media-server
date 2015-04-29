@@ -1,0 +1,14 @@
+#!/bin/sh
+deb=$1
+dockerfile=$(dirname $0)/Dockerfile
+
+version=$(basename $deb)
+version=${version#plexmediaserver_}
+version=${version%_amd64.deb}
+
+context=$(mktemp -d)
+cp $dockerfile $context
+rsync $deb $context/plexmediaserver.deb
+docker build --tag=dkagedal/plex-media-server:$version $context
+docker tag dkagedal/plex-media-server:$version dkagedal/plex-media-server:latest
+rm -r "$context"
