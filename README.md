@@ -3,7 +3,7 @@ Dockerized [Plex Media Server](https://plex.tv/).
 Usage
 -----
 
-You should provide a least two mount points accessibly by user #**104** (plex):
+You should provide a least two mount points accessibly by user #**1030** (plex):
 
   * `/config`: To somewhere to hold your Plex configuration (can be a data-only container). This will include all media listing, posters, collections and playlists you've setup...
   * Mount one or more of your media files (videos, audio, images...) as `/media` or some other mount location.
@@ -11,7 +11,7 @@ You should provide a least two mount points accessibly by user #**104** (plex):
 Example:
 
     $ mkdir ~/plex-config
-    $ chown 104:104 -R ~/plex-config
+    $ chown 1030:1030 -R ~/plex-config
     $ docker run -d --restart=always -v ~/plex-config:/config -v ~/Movies:/media -p 32400:32400 wernight/plex-media-server
 
 The `--restart=always` is optional, it'll for example allow auto-start on boot.
