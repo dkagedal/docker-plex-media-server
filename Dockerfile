@@ -45,6 +45,7 @@ ENV PLEX_MEDIA_SERVER_HOME /usr/lib/plexmediaserver
 ENV PLEX_MEDIA_SERVER_TMPDIR=/tmp
 ENV LD_LIBRARY_PATH /usr/lib/plexmediaserver
 ENV TMPDIR /tmp
+ENV LC_CTYPE C.UTF-8
 
 WORKDIR /usr/lib/plexmediaserver
 CMD test -f /config/Plex\ Media\ Server/plexmediaserver.pid && rm -f /config/Plex\ Media\ Server/plexmediaserver.pid; \
