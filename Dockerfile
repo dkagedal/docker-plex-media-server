@@ -1,11 +1,16 @@
 FROM ubuntu:15.04
 
 # Install required packages
-RUN apt-get update && apt-get install -y python-yaml
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y python-yaml
 
 # Create the plex user first with a well-known uid and gid
 ENV PLEX_UID 1030
 RUN adduser --system --uid $PLEX_UID --shell /bin/bash --home /var/lib/plexmediaserver --group plex
+
+# Hack to avoid install to fail due to upstart not being installed.
+# We won't use upstart anyway.
+RUN touch /bin/start
+RUN chmod +x /bin/start
 
 # Add the manually downloaded deb
 ADD plexmediaserver.deb /
@@ -15,6 +20,9 @@ RUN rm -f plexmediaserver.deb
 # Compatibility hack
 RUN mkdir /vault && ln -s /film /vault/Film
 RUN rm -r /var/lib/plexmediaserver && ln -s /config /var/lib/plexmediaserver
+
+# Hack clean-up
+RUN rm -f /bin/start
 
 VOLUME /config
 VOLUME /film
@@ -39,4 +47,5 @@ ENV LD_LIBRARY_PATH /usr/lib/plexmediaserver
 ENV TMPDIR /tmp
 
 WORKDIR /usr/lib/plexmediaserver
-CMD ulimit -s $PLEX_MAX_STACK_SIZE && ./Plex\ Media\ Server
+CMD test -f /config/Plex\ Media\ Server/plexmediaserver.pid && rm -f /config/Plex\ Media\ Server/plexmediaserver.pid; \
+    ulimit -s $PLEX_MAX_STACK_SIZE && ./Plex\ Media\ Server
