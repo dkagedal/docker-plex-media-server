@@ -10,5 +10,5 @@ context=$(mktemp -d)
 cp $dockerfile $context
 rsync $deb $context/plexmediaserver.deb
 docker build --tag=dkagedal/plex-media-server:$version $context
-docker tag -f dkagedal/plex-media-server:$version dkagedal/plex-media-server:latest
+docker tag dkagedal/plex-media-server:$version dkagedal/plex-media-server:latest
 rm -r "$context"
